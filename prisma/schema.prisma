@@ -1,0 +1,285 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model admins {
+  id               String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id_batch         String         @db.VarChar(50)
+  first_name       String         @db.VarChar(50)
+  middle_name      String?        @db.VarChar(50)
+  last_name        String         @db.VarChar(50)
+  maiden_name      String?        @db.VarChar(50)
+  line_of_business admin_lob
+  phone            String?        @db.VarChar(20)
+  email            String?        @unique @db.VarChar(100)
+  is_active        Boolean?       @default(true)
+  is_production    Boolean?       @default(false)
+  created_at       DateTime?      @default(now()) @db.Timestamp(6)
+  updated_at       DateTime?      @default(now()) @db.Timestamp(6)
+  applications     applications[]
+  business         business[]
+  internships      internships[]
+  users            users[]
+}
+
+model applications {
+  id                 String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  student_id         String                  @db.Uuid
+  internship_id      String                  @db.Uuid
+  application_date   DateTime?               @default(now()) @db.Timestamp(6)
+  application_status application_status_type @default(submitted)
+  updated_at         DateTime?               @default(now()) @db.Timestamp(6)
+  updated_by         String?                 @db.Uuid
+  is_active          Boolean?                @default(true)
+  internships        internships             @relation(fields: [internship_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students           students                @relation(fields: [student_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  admins             admins?                 @relation(fields: [updated_by], references: [id], onUpdate: NoAction)
+}
+
+model business {
+  id             String        @id @db.Uuid
+  business_name  String        @db.VarChar(100)
+  industry       String        @db.VarChar(100)
+  summary        String?       @db.VarChar(2050)
+  street_address String?       @db.VarChar(255)
+  city           String?       @db.VarChar(100)
+  state_province String?       @db.VarChar(100)
+  postal_code    String?       @db.VarChar(20)
+  country        String?       @db.VarChar(100)
+  web_page       String?       @db.VarChar(255)
+  linkedin_url   String?       @db.VarChar(255)
+  logo_url       String?       @db.VarChar(255)
+  contact_email  String?       @db.VarChar(100)
+  phone          String?       @db.VarChar(20)
+  tax_id         String?       @unique @db.VarChar(50)
+  is_verified    Boolean?      @default(false)
+  is_active      Boolean?      @default(true)
+  created_at     DateTime?     @default(now()) @db.Timestamp(6)
+  updated_at     DateTime?     @default(now()) @db.Timestamp(6)
+  updated_by     String?       @db.Uuid
+  users          users         @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  admins         admins?       @relation(fields: [updated_by], references: [id], onUpdate: NoAction)
+  internships    internships[]
+}
+
+model internship_skills {
+  internship_id String      @db.Uuid
+  skill_id      String      @db.Uuid
+  internships   internships @relation(fields: [internship_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  skills        skills      @relation(fields: [skill_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([internship_id, skill_id])
+}
+
+model internships {
+  id                String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  business_id       String                 @db.Uuid
+  title             String                 @db.VarChar(100)
+  job_description   String                 @db.VarChar(2050)
+  requirements      String[]
+  job_location      String?                @db.VarChar(255)
+  modality          internship_modality?
+  job_status        internship_status?     @default(draft)
+  started_date      DateTime?              @db.Date
+  end_date          DateTime?              @db.Date
+  is_active         Boolean?               @default(true)
+  created_at        DateTime?              @default(now()) @db.Timestamp(6)
+  updated_at        DateTime?              @default(now()) @db.Timestamp(6)
+  updated_by        String?                @db.Uuid
+  shift_type        internship_shift_type? @default(Part_time)
+  applications      applications[]
+  internship_skills internship_skills[]
+  business          business               @relation(fields: [business_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  admins            admins?                @relation(fields: [updated_by], references: [id], onUpdate: NoAction)
+
+  @@index([business_id], map: "idx_internships_business")
+  @@index([modality], map: "idx_internships_modality")
+  @@index([job_status], map: "idx_internships_status")
+}
+
+model languages {
+  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  language_name     String              @unique @db.VarChar(50)
+  iso_code          String?             @unique @db.VarChar(10)
+  student_languages student_languages[]
+}
+
+model skills {
+  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String              @unique @db.VarChar(50)
+  category          String?             @db.VarChar(50)
+  internship_skills internship_skills[]
+  student_skills    student_skills[]
+}
+
+model student_education {
+  id               String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  student_id       String?        @db.Uuid
+  institution_name String         @db.VarChar(200)
+  study_level      studies_level?
+  degree_name      String?        @db.VarChar(100)
+  field_of_study   String?        @db.VarChar(100)
+  started_date     DateTime?      @db.Date
+  end_date         DateTime?      @db.Date
+  is_current       Boolean?       @default(false)
+  honors           String?
+  students         students?      @relation(fields: [student_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model student_experience {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  student_id   String?   @db.Uuid
+  company_name String    @db.VarChar(100)
+  role_title   String    @db.VarChar(100)
+  start_date   DateTime? @db.Date
+  end_date     DateTime? @db.Date
+  is_current   Boolean?  @default(false)
+  description  String?
+  students     students? @relation(fields: [student_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model student_languages {
+  student_id        String                     @db.Uuid
+  language_id       String                     @db.Uuid
+  proficiency_level language_proficiency_level
+  languages         languages                  @relation(fields: [language_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students          students                   @relation(fields: [student_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([student_id, language_id])
+}
+
+model student_projects {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  student_id        String?   @db.Uuid
+  title             String    @db.VarChar(100)
+  description       String?
+  technologies_used String?   @db.VarChar(255)
+  project_url       String?   @db.VarChar(255)
+  is_personal       Boolean?  @default(true)
+  created_at        DateTime? @default(now()) @db.Timestamp(6)
+  students          students? @relation(fields: [student_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model student_skills {
+  student_id        String   @db.Uuid
+  skill_id          String   @db.Uuid
+  proficiency_level String?  @db.VarChar(20)
+  skills            skills   @relation(fields: [skill_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  students          students @relation(fields: [student_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([student_id, skill_id])
+}
+
+model students {
+  id                  String               @id @db.Uuid
+  middle_name         String?              @db.VarChar(50)
+  maiden_name         String?              @db.VarChar(50)
+  street_address      String?              @db.VarChar(255)
+  city                String?              @db.VarChar(100)
+  state_province      String?              @db.VarChar(100)
+  postal_code         String?              @db.VarChar(20)
+  country             String?              @db.VarChar(100)
+  resume_url          String?              @db.VarChar(255)
+  linkedin_url        String?              @db.VarChar(255)
+  profile_picture_url String?              @db.VarChar(255)
+  headline            String?              @db.VarChar(255)
+  summary_title       String?              @db.VarChar(100)
+  summary             String?
+  birth_date          DateTime?            @db.Date
+  phone               String?              @db.VarChar(20)
+  national_id         String?              @unique @db.VarChar(50)
+  willing_to_travel   Boolean?
+  has_vehicle         Boolean?
+  applications        applications[]
+  student_education   student_education[]
+  student_experience  student_experience[]
+  student_languages   student_languages[]
+  student_projects    student_projects[]
+  student_skills      student_skills[]
+  users               users                @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model users {
+  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  first_name      String          @db.VarChar(50)
+  last_name       String          @db.VarChar(50)
+  email_address   String          @unique @db.VarChar(254)
+  hashed_password String
+  user_type       user_role
+  is_active       Boolean?        @default(true)
+  created_at      DateTime?       @default(now()) @db.Timestamp(6)
+  updated_at      DateTime?       @default(now()) @db.Timestamp(6)
+  updated_by      String?         @db.Uuid
+  business        business?
+  notifications   notifications[]
+  students        students?
+  admins          admins?         @relation(fields: [updated_by], references: [id], onUpdate: NoAction)
+}
+
+model notifications {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String?   @db.Uuid
+  type       String?   @db.VarChar(50)
+  title      String?   @db.VarChar(100)
+  message    String?
+  is_read    Boolean?  @default(false)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  users      users?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+enum admin_lob {
+  engineering
+  marketing
+  quality_assurance
+}
+
+enum application_status_type {
+  submitted
+  in_review
+  accepted
+  rejected
+}
+
+enum internship_modality {
+  remote
+  onsite
+  hybrid
+}
+
+enum internship_status {
+  draft
+  open
+  closed
+  under_review
+}
+
+enum language_proficiency_level {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+enum studies_level {
+  high_school
+  associate
+  bachelor
+}
+
+enum user_role {
+  business
+  student
+  admin
+}
+
+enum internship_shift_type {
+  Full_time
+  Part_time
+}

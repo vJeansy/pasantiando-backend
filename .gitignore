@@ -1,0 +1,92 @@
+# === Node & Build Outputs ===
+node_modules/
+dist/
+build/
+out/
+.next/
+.cache/
+coverage/
+.nyc_output/
+temp/
+.tmp/
+.temp/
+
+# === Logs ===
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# === Runtime Data ===
+pids/
+*.pid
+*.seed
+*.pid.lock
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# === Environment Files ===
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# === OS Files ===
+.DS_Store
+Thumbs.db
+
+# === Editors & IDEs ===
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# === TypeScript ===
+*.tsbuildinfo
+
+# === Package Managers ===
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+# (↑ opcional — ignora solo si usas CI/CD que reinstala dependencias siempre.
+#  Si no, mantén el lockfile para consistencia.)
+
+# === Prisma & Generated Code ===
+/generated/
+/prisma/migrations/
+/prisma/dev.db
+/generated/prisma
+
+# === Miscellaneous ===
+*.tgz
+*.swp
+*.bak
+*.tmp
+*.orig
+*.rej
+
+# === Coverage / Reports ===
+coverage/
+lcov-report/
+
+# === Cache Directories ===
+.cache/
+.eslintcache
+.stylelintcache
+.next/cache/
+vite.config.ts.timestamp-*
+
+# === Local Test Data ===
+test-output/
