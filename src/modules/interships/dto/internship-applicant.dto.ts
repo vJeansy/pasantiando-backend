@@ -23,6 +23,7 @@ export class InternshipApplicantDto {
   country?: string | null;
   postalCode?: string | null;
   province?: string | null;
+  municipio?: string | null;
   city?: string | null;
   streetAddress?: string | null;
   phone?: string | null;

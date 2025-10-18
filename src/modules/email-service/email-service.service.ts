@@ -17,7 +17,7 @@ export class EmailService {
     }
 
     const payload: any = {
-      from: 'Pasantiando <onboarding@resend.dev>',
+      from: 'Pasantiando <no-reply@pasantiando.com>',
       to,
       subject,
       text,

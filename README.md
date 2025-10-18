@@ -81,8 +81,14 @@ npx prisma migrate dev --name init
 6. Levanta la aplicación en modo desarrollo:
 
 ```powershell
-npm run start:dev
+npm run prepare:dev; npm run prisma:migrate; npm run start:dev
 ```
+
+7. Levanta la aplicacion en modo produccion:
+
+```Render
+npm run prepare:prod; npm run build; npm run start:prod
+````
 
 
 Variables de entorno recomendadas

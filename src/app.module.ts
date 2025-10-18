@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './modules/users/users.module';
-import { config } from 'dotenv';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
@@ -13,14 +12,13 @@ import { LanguageModule } from './modules/languages/language.module';
 import { ExperiencesModule } from './modules/experiences/experiences.module';
 import { StudentProjectsModule } from './modules/student-projects/student-projects.module';
 
-config();
-
 @Module({
     imports: [
       UsersModule, AuthModule, InternshipsModule, ApplicationsModule, SkillModule,
       LanguageModule, ExperiencesModule, StudentProjectsModule, PrismaModule,
       ConfigModule.forRoot({
-      isGlobal: true, // 👈 Make ConfigModule available everywhere
+      isGlobal: true, // Config module disponible de manera global.
+      envFilePath: '.env' // Este archivo será copiado dinámicamente por tus scripts
     }),
   ],
   controllers: [AppController],

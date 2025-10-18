@@ -28,6 +28,11 @@ export class businessProfileDto {
     state_province?: string;
 
     @IsOptional()
+    @IsString({ message: 'El municipio debe ser una cadena de texto.' })
+    @Length(3, 100, { message: 'El municipio debe tener entre 3 y 100 caracteres.' })
+    municipio?: string;
+
+    @IsOptional()
     @IsString({ message: 'El código postal debe ser una cadena de texto.' })
     @Length(3, 20, { message: 'El código postal debe tener entre 3 y 20 caracteres.' })
     postal_code?: string;

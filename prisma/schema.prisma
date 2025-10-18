@@ -62,6 +62,7 @@ model business {
   created_at     DateTime?     @default(now()) @db.Timestamp(6)
   updated_at     DateTime?     @default(now()) @db.Timestamp(6)
   updated_by     String?       @db.Uuid
+  municipio      String?       @db.VarChar(100)
   users          users         @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   admins         admins?       @relation(fields: [updated_by], references: [id], onUpdate: NoAction)
   internships    internships[]
@@ -195,6 +196,7 @@ model students {
   national_id         String?              @unique @db.VarChar(50)
   willing_to_travel   Boolean?
   has_vehicle         Boolean?
+  municipio           String?              @db.VarChar(100)
   applications        applications[]
   student_education   student_education[]
   student_experience  student_experience[]

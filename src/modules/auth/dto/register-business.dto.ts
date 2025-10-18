@@ -31,6 +31,10 @@ export class RegisterBusinessDto extends RegisterDto {
   @IsNotEmpty()
   state_province: string;
 
+  @IsNotEmpty()
+  @IsString({ message: 'El municipio debe ser una cadena de texto.' })
+  municipio?: string;
+
   @IsString()
   @IsNotEmpty()
   postal_code: string;

@@ -35,6 +35,11 @@ export class studentProfileDto {
   state_province?: string;
 
   @IsOptional()
+  @IsString({ message: 'El municipio debe ser una cadena de texto.' })
+  @Length(3, 100, { message: 'El municipio debe tener entre 3 y 100 caracteres.' })
+  municipio?: string;
+
+  @IsOptional()
   @Transform(({ value }) => value === '' ? undefined : value)
   @IsString({ message: 'El código postal debe ser una cadena de texto.' })
   postal_code?: string;
