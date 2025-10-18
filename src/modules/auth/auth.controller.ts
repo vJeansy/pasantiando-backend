@@ -17,7 +17,7 @@ export class AuthController {
     @Post('register/student')
     @ApiOperation({ summary: `Register a new student's account` })
     async registerStudent(@Body() registerStudentDto: RegisterStudentDto) {
-        try {
+        /*try {
             const API_KEY = this.configService.get<string>('MAILBOXLAYER_API_KEY');
             if (!API_KEY) throw new Error('MailboxLayer API key is not configured.');
             const response = await axios.get(`http://apilayer.net/api/check?access_key=${API_KEY}&email=${registerStudentDto.email_address}`);
@@ -25,14 +25,14 @@ export class AuthController {
             if (!format_valid || !smtp_check) throw new UnauthorizedException('Email no verificable. Por favor, utiliza un email válido.');
         } catch (error) {
             throw new UnauthorizedException('No se pudo validar el correo electrónico, porfavor confirma que el correo electronico utilizado sea valido.');
-        }
+        }*/
         return this.authService.registerStudent(registerStudentDto);
     }
 
     @Post('register/business')
     @ApiOperation({ summary: `Register a new business's ccount` })
     async registerBusiness(@Body() registerBusinessDto: RegisterBusinessDto) {
-        try {
+        /*try {
             const API_KEY = this.configService.get<string>('MAILBOXLAYER_API_KEY');
             if (!API_KEY) throw new Error('MailboxLayer API key is not configured.');
             const response = await axios.get(`http://apilayer.net/api/check?access_key=${API_KEY}&email=${registerBusinessDto.email_address}`);
@@ -40,7 +40,7 @@ export class AuthController {
             if (!format_valid || !smtp_check) throw new UnauthorizedException('Email no verificable. Por favor, utiliza un email válido.');
         } catch (error) {
             throw new UnauthorizedException('No se pudo validar el correo electrónico, porfavor confirma que el correo electronico utilizado sea valido.');
-        }
+        }*/
         return this.authService.registerBusiness(registerBusinessDto);
     }
 
