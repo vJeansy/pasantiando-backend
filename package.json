@@ -6,8 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "prepare:dev": "copy /Y .env.development .env",
-    "prepare:prod": "copy /Y .env.production .env",
+    "prepare:dev": "shx cp .env.development .env",
+    "prepare:prod": "shx cp .env.production .env",
     "prisma:generate": "npm run prepare:dev && prisma generate",
     "prisma:migrate": "npm run prepare:dev && prisma migrate dev",
     "prisma:deploy": "npm run prepare:prod && prisma migrate deploy",
@@ -26,6 +26,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/cli": "^11.0.10",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
@@ -33,7 +34,6 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
-    "@nestjs/cli": "^11.0.10",
     "@nestjs/platform-socket.io": "^11.1.6",
     "@nestjs/swagger": "^11.2.0",
     "@nestjs/typeorm": "^11.0.0",
@@ -76,6 +76,7 @@
     "jest": "^29.7.0",
     "prettier": "^3.4.2",
     "prisma": "^6.14.0",
+    "shx": "^0.4.0",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
