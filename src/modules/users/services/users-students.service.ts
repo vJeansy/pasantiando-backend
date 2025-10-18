@@ -4,7 +4,7 @@ import { studentProfileDto } from "../dto/student-profile.dto";
 import { UserType } from "src/common/user-type-.enum";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { getCurriculumSelect, getEducationSelect, getExperienceSelect, getProjectSelect } from "src/utils/selects/curriculum-select.util";
-import { Prisma } from "generated/prisma";
+import { Prisma } from "@prisma/client";
 import { UpdateStudentDto } from "../dto/update-student.dto";
 
 @Injectable()
@@ -91,15 +91,15 @@ export class UserStudentsService {
 
             // Separar campos de users y students
             const userFields = ['first_name', 'last_name'];
-            const userData: Partial<Prisma.UserUpdateInput> = {};
-            const studentData: Partial<Prisma.UserUpdateInput> = {};
+            const userData: Partial<Prisma.usersUpdateInput> = {};
+            const studentData: Partial<Prisma.usersUpdateInput> = {};
 
             for (const [key, value] of Object.entries(updateDto)) {
                 if (value === undefined) continue;
                 if (userFields.includes(key)) {
-                    userData[key as keyof Prisma.UserUpdateInput] = value;
+                    userData[key as keyof Prisma.usersUpdateInput] = value;
                 } else {
-                    studentData[key as keyof Prisma.UserUpdateInput] = value;
+                    studentData[key as keyof Prisma.usersUpdateInput] = value;
                 }
             }
 
