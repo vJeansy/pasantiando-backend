@@ -118,10 +118,6 @@ export class InternshipAnalyticsService {
       },
     });
 
-    if (!internships || internships.length === 0) {
-      throw new NotFoundException('No se encontraron pasantías para este negocio.');
-    }
-
     const allApplicants: InternshipApplicantDto[] = [];
 
     for (const internship of internships) {
