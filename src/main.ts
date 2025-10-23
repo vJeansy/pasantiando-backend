@@ -25,7 +25,7 @@ async function bootstrap() {
     }));
 
     app.enableCors({
-      origin: ['https://pasantiando.com'],
+      origin: ['https://pasantiando.com', 'http://localhost:5173'], // for dev only
       methods: ['GET', 'POST', 'PATCH', 'DELETE'],
       credentials: true, //no cookies yet.
     })

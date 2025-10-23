@@ -71,8 +71,9 @@ export class StudentProjectsService {
     }
   }
 
-  async removeMyExperience(projectId: string, studentId: string) {
-    const project = await this.prisma.student_projects.findUnique({ where: { id: projectId } });
+  async removeMyExperience(studentId: string, projectId: string) {
+    const project = await this.prisma.student_projects.findUnique({ where: { id: projectId },
+    select: { id: true, student_id: true } });
     if (!project || studentId !== project.student_id) throw new NotFoundException('Projyecto no encontrado para este estudiante.')
     try {
       return await this.prisma.student_projects.delete({ where: { id: projectId } });

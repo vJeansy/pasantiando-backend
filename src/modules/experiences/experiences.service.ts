@@ -75,6 +75,7 @@ export class ExperiencesService {
   async removeStudentExperience(studentId: string, experienceId: string) {
     const experience = await this.prisma.student_experience.findUnique({
       where: { id: experienceId },
+      select: { id: true, student_id: true },
     });
 
     if (!experience || experience.student_id !== studentId) {
